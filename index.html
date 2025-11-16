@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>In-Store Navigation System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0"
+  }
+}
+</script>
+</head>
+<body class="bg-gray-50 antialiased font-sans">
+    <div id="app-container" class="min-h-screen">
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-3">
+                    <h1 id="app-title" class="text-xl sm:text-2xl font-bold text-gray-900">In-Store Navigation</h1>
+                    <div class="flex items-center space-x-4">
+                         <div class="flex items-center space-x-2">
+                            <span id="shopper-label" class="text-sm font-medium text-gray-500 hidden sm:block">Shopper</span>
+                             <label for="mode-toggle" class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="mode-toggle" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                            </label>
+                            <span id="shopkeeper-label" class="text-sm font-medium text-gray-500">Shopkeeper</span>
+                        </div>
+                        <div class="relative">
+                            <select id="language-select" class="appearance-none bg-gray-100 border border-gray-200 text-gray-700 py-1.5 pl-3 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm">
+                                <option value="en">English</option>
+                                <option value="kn">ಕನ್ನಡ</option>
+                                <option value="hi">हिन्दी</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+            <div class="lg:col-span-2">
+                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-full flex flex-col">
+                    <div class="flex justify-between items-center mb-4">
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Floor Map</h1>
+                        <div id="floor-buttons-container" class="flex items-center space-x-2">
+                            <!-- Floor buttons will be inserted here -->
+                        </div>
+                    </div>
+                    <div id="nav-instruction-banner" class="hidden mb-2 p-2 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+                        <p class="text-sm font-semibold text-blue-800"></p>
+                    </div>
+                    <div id="floor-map-container" class="relative w-full aspect-[4/3] bg-white border border-gray-200 rounded-lg overflow-hidden bg-[linear-gradient(to_right,rgba(229,231,235,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(229,231,235,0.5)_1px,transparent_1px)] bg-[size:1.5rem_1.5rem]">
+                        <svg id="path-svg" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" class="absolute top-0 left-0"></svg>
+                        <!-- Map areas will be inserted here -->
+                        <div id="user-dot" class="absolute hidden">
+                            <div class="relative w-6 h-6 sm:w-8 sm:h-8">
+                                <div id="user-ping" class="absolute inset-0 bg-blue-500 rounded-full opacity-50 animate-ping hidden"></div>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-blue-600 drop-shadow-lg"><path d="M12 2a2.5 2.5 0 110 5 2.5 2.5 0 010-5zm3.5 6.43c-1.11.93-2.24 1.57-3.5 1.57s-2.39-.64-3.5-1.57C6.31 9.49 5 11.83 5 14.5V17h14v-2.5c0-2.67-1.31-5.01-3.5-6.07z"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1">
+                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-full flex flex-col">
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                            <button data-tab="products" class="tab-button border-blue-500 text-blue-600 whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">All Products</button>
+                            <button data-tab="list" class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm flex items-center">
+                                Shopping List
+                                <span id="shopping-list-count" class="hidden ml-2 bg-blue-100 text-blue-600 text-xs font-semibold px-2 py-0.5 rounded-full">0</span>
+                            </button>
+                             <button data-tab="services" class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">Services</button>
+                        </nav>
+                    </div>
+
+                    <div id="side-panel-content" class="flex-grow pt-5 overflow-hidden">
+                        <!-- Products Panel -->
+                        <div id="products-panel" class="tab-content h-full flex flex-col">
+                             <div class="relative mb-4">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path></svg>
+                                </div>
+                                <input id="product-search-input" type="text" placeholder="Search products..." class="block w-full rounded-md border-gray-300 pl-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            </div>
+                            <div id="product-list-container" class="flex-grow overflow-y-auto custom-scrollbar pr-2 -mr-2"></div>
+                        </div>
+                        <!-- Shopping List Panel -->
+                        <div id="list-panel" class="tab-content h-full flex-col hidden">
+                            <div id="shopping-list-container" class="flex-grow overflow-y-auto custom-scrollbar pr-2 -mr-2"></div>
+                            <div class="border-t pt-4 mt-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span id="total-items-label" class="font-semibold text-gray-700">Total Items</span>
+                                    <span id="total-items-count" class="font-bold text-lg text-gray-900">0</span>
+                                </div>
+                                <button id="navigation-button" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg disabled:bg-gray-300">
+                                    Start Navigation
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Services Panel -->
+                        <div id="services-panel" class="tab-content h-full flex-col hidden">
+                           <div id="services-list-container" class="flex-grow overflow-y-auto custom-scrollbar pr-2 -mr-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
